@@ -6,6 +6,7 @@ import "moment/locale/es";
 export default function Forecast(props) {
   const [weatherList, setWeatherList] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [city, setCity] = useState("");
 
   useEffect(() => {
@@ -20,6 +21,8 @@ export default function Forecast(props) {
             setWeatherList(res.body.weather);
             setCity(res.body.city);
             setIsLoading(false);
+          } else {
+            setError(true);
           }
         })
         .catch((error) => console.error(error));
@@ -33,7 +36,11 @@ export default function Forecast(props) {
 
   return (
     <React.Fragment>
-      {isLoading ? (
+      {error ? (
+        <div className="error my-4">
+          Se ha producido un error. Por favor intente ingresando más tarde.
+        </div>
+      ) : isLoading ? (
         <div className="text-center">
           <ContentLoader height={200} width={800}>
             <circle cx="100" cy="40" r="40" />

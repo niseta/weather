@@ -5,6 +5,7 @@ import Select from "react-select";
 
 export default function Main() {
   const [city, setCity] = useState("");
+  const [error, setError] = useState(false);
   const [selectedCity, setSelectedCity] = useState("");
 
   useEffect(() => {
@@ -14,15 +15,13 @@ export default function Main() {
         if (!res.error) {
           setCity(res.body.city);
           setSelectedCity(res.body.city);
+        } else {
+          setError(true);
         }
       });
   }, []);
 
   let cityList = [
-    {
-      value: city,
-      label: `${city ? city + " (Actual)" : "Cargando ciudad actual"}`,
-    },
     {
       value: "London",
       label: "Londres",
@@ -44,6 +43,12 @@ export default function Main() {
       label: "Zagreb",
     },
   ];
+
+  !error &&
+    cityList.unshift({
+      value: city,
+      label: `${city ? city + " (Actual)" : "Cargando ciudad actual"}`,
+    });
 
   return (
     <div className="container mb-3">

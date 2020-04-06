@@ -4,10 +4,10 @@ import ContentLoader from "react-content-loader";
 export default function Current(props) {
   const [weather, setWeather] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [city, setCity] = useState("");
 
   useEffect(() => {
-    console.log("props", props.city);
     if (props.city !== city || city === "") {
       setIsLoading(true);
       let url = "http://localhost:3030/v1/current";
@@ -19,7 +19,8 @@ export default function Current(props) {
             setWeather(res.body.weather);
             setCity(res.body.city);
             setIsLoading(false);
-            console.log("ciudad", res.body.city);
+          } else {
+            setError(true);
           }
         })
         .catch((error) => console.error(error));
@@ -28,7 +29,11 @@ export default function Current(props) {
 
   return (
     <React.Fragment>
-      {isLoading ? (
+      {error ? (
+        <div className="error my-4">
+          Se ha producido un error. Por favor intente ingresando más tarde.
+        </div>
+      ) : isLoading ? (
         <div>
           <React.Fragment>
             <div className="row">
@@ -89,6 +94,11 @@ export default function Current(props) {
       )}
       <style jsx>
         {`
+          .error {
+            justify-content: center;
+            display: flex;
+            font-size: 1.2em;
+          }
           .loaderWeatherIcon {
             display: flex;
             justify-content: center;
