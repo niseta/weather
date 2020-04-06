@@ -7,7 +7,9 @@
     "client": "cd client && npm start",
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\" ",
-    "test": "mocha 'test/apiTest.js'"
+    "test": "mocha 'test/apiTest.js'",
+    "client-install": "cd client && npm install",
+    "server-install": "npm install"
   },
   "author": "",
   "license": "ISC",
